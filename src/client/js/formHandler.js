@@ -15,16 +15,30 @@ const post = async (url = '', data = {}) => {
     }
 }
 
-const handleSubmit = async () => {
-    /**
-     * TODO
-     *  - Get Value of the input for URL
-     *  - Check if it's URL or not
-     *      yes
-     *          send it to the backend
-     *      no
-     *          show user message it's not valid URL
-     */
+
+async function handleSubmit() {
+    let articleUrl = document.getElementById('article-url').value
+
+    if (Client.checkURL(articleUrl)) {
+        let { data } = await fetch('http://localhost:8081/api', {
+            method: 'POST',
+            credentials: 'same-origin',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({ articleUrl })
+        })
+        data = await data.json()
+        document.getElementById('agreement').textContent = `Agreement: ${data.agreement}`
+        document.getElementById('confidence').textContent = `Confidence: ${data.confidence}`
+        document.getElementById('score_tag').textContent = `Score tag: ${data.score_tag}`
+        document.getElementById('subjectivity').textContent = `Subjectivity ${data.subjectivity}`
+        document.getElementById('irony').textContent = `Irony: ${data.irony}`
+    } else {
+        alert('Enter a correct URL')
+    }
 }
 
-export default handleSubmit
+export { handleSubmit }
