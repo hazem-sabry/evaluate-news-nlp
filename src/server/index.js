@@ -29,9 +29,6 @@ app.use(
 
 app.use(express.static('dist'));
 
-const mockAPIResponse = require('./mockAPI.js');
-
-
 app.get('/', function (req, res) {
     // res.sendFile('dist/index.html')
     res.sendFile(path.resolve('src/client/views/index.html'))
