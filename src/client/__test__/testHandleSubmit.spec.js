@@ -1,7 +1,13 @@
-// to solve ReferenceError: regeneratorRuntime is not defined
-// https://knowledge.udacity.com/questions/174638
-import 'babel-polyfill'
+import { handleSubmit } from '../js/formHandler'
 
-describe('Client Test', () => {
-    // TODO: add your test cases to test client
+describe('Test, ensures the function "handleSubmit()" exists', () => {
+    test('It should return true', () => {
+        expect(handleSubmit).toBeDefined()
+    });
+});
+
+describe('Test, ensures the function "handleSubmit()" is a function', () => {
+    test('It should be a function', () => {
+        expect(typeof handleSubmit).toBe('function')
+    })
 })
