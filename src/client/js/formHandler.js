@@ -16,11 +16,16 @@ const post = async (url = '', data = {}) => {
 }
 
 
-async function handleSubmit() {
-    let articleUrl = document.getElementById('article-url').value
+async function handleSubmit(e) {
+    e.preventDefault();
 
-    if (Client.checkURL(articleUrl)) {
-        let { data } = await fetch('http://localhost:8081/api', {
+    document.querySelector('#loading').innerHTML = `<strong>Loading...</strong>`;
+
+    let article_url = document.getElementById('article-url').value;
+
+    if (Client.checkURL(article_url)) {
+        let apiData = {};
+        await fetch('http://localhost:8081/api', {
             method: 'POST',
             credentials: 'same-origin',
             mode: 'cors',
@@ -28,14 +33,20 @@ async function handleSubmit() {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
             },
-            body: JSON.stringify({ articleUrl })
+            body: JSON.stringify({ article_url })
         })
-        data = await data.json()
-        document.getElementById('agreement').textContent = `Agreement: ${data.agreement}`
-        document.getElementById('confidence').textContent = `Confidence: ${data.confidence}`
-        document.getElementById('score_tag').textContent = `Score tag: ${data.score_tag}`
-        document.getElementById('subjectivity').textContent = `Subjectivity ${data.subjectivity}`
-        document.getElementById('irony').textContent = `Irony: ${data.irony}`
+        .then(response => response.json())
+        .then(data => {
+            apiData = data;
+        })
+
+        // Bind apiData to the DOM
+        document.querySelector('#loading').innerHTML = ``;
+        document.querySelector('#agreement').innerHTML = `<strong>Agreement:</strong> ${apiData.agreement}`;
+        document.querySelector('#confidence').innerHTML = `<strong>Confidence:</strong> ${apiData.confidence}`;
+        document.querySelector('#score_tag').innerHTML = `<strong>Score tag:</strong> ${apiData.score_tag}`
+        document.querySelector('#subjectivity').innerHTML = `<strong>Subjectivity:</strong> ${apiData.subjectivity}`;
+        document.querySelector('#irony').innerHTML = `<strong>Irony:</strong> ${apiData.irony}`;
     } else {
         alert('Enter a correct URL')
     }

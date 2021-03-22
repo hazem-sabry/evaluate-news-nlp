@@ -8,9 +8,9 @@
   <body>
     <main>
       <div class="container">
-        <p>Enter a URL of an article / a blog to discover its sentiment.</p>
+        <h1 class="heading">Enter a URL of an article / a blog to discover its sentiment.</h1 class="heading">
         <section>
-          <form id="form">
+          <form id="form" method="POST" onsubmit="Client.handleSubmit(event)">
             <label for="article-url">URL</label>
             <input id="article-url" type="text" name="input" value="" placeholder="Enter Article URL here" />
             <button
@@ -23,8 +23,8 @@
         </section>
 
         <section>
-          <strong>Form Results:</strong>
-          <div id="text"></div>
+          <h2 class="heading">Form Results:</h2>
+          <div id="loading"></div>
           <div id="agreement"></div>
           <div id="subjectivity"></div>
           <div id="confidence"></div>

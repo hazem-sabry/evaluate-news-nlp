@@ -5,7 +5,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mockAPIResponse = require('./mockAPI.js');
-const axios = require('axios');
+const fetch = require('node-fetch');
 
 dotenv.config();
 
@@ -31,37 +31,47 @@ app.use(express.static('dist'));
 
 app.get('/', function (req, res) {
     // res.sendFile('dist/index.html')
-    res.sendFile(path.resolve('src/client/views/index.html'))
+    res.sendFile(path.resolve('src/client/views/index.html'));
 });
 
 // INFO: a route that handling post request for new URL that coming from the frontend
 app.post('/api', async (req, res) => {
-    const { article_url } = req.body
-    const Url = `${API_URL}?key=${API_KEY}&url=${article_url}&lang=en`
+    const { article_url } = req.body;
+    const url = `${API_URL}?key=${API_KEY}&url=${article_url}&lang=en`;
     try {
-        const {
-            data: { score_tag, agreement, subjectivity, confidence, irony }
-        } = await axios(Url)
-        res.send({
-            score_tag: score_tag,
-            agreement: agreement,
-            subjectivity: subjectivity,
-            confidence: confidence,
-            irony: irony
+        // { score_tag, agreement, subjectivity, confidence, irony }
+        await fetch(url, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            }
         })
+            .then((response) => response.json())
+            .then((data) => {
+                const { score_tag, agreement, subjectivity, confidence, irony } = data;
+                res.send({
+                    score_tag: score_tag,
+                    agreement: agreement,
+                    subjectivity: subjectivity,
+                    confidence: confidence,
+                    irony: irony
+                });
+            });
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message);
     }
 })
 
 app.get('/test', function (req, res) {
-    res.send(mockAPIResponse)
+    res.send(mockAPIResponse);
 });
 
 // designates what port the app will listen to for incoming requests
 app.listen(PORT, (error) => {
-    if (error) throw new Error(error)
-    console.log(`Server listening on port ${PORT}!`)
+    if (error) throw new Error(error);
+    console.log(`Server listening on port ${PORT}!`);
 });
 
 
