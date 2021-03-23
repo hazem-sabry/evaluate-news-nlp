@@ -2,7 +2,7 @@ import { handleSubmit } from '../js/formHandler'
 
 describe('Test, ensures the function "handleSubmit()" exists', () => {
     test('It should return true', () => {
-        expect(handleSubmit).toBeDefined()
+        expect(handleSubmit).toBeDefined();
     });
 });
 

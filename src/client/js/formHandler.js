@@ -30,7 +30,7 @@ async function handleSubmit(e) {
         document.querySelector('#subjectivity').innerHTML = `<strong>Subjectivity:</strong> ${apiData.subjectivity}`;
         document.querySelector('#irony').innerHTML = `<strong>Irony:</strong> ${apiData.irony}`;
     } else {
-        alert('Enter a correct URL')
+        alert('Enter a correct URL');
     }
 }
 
